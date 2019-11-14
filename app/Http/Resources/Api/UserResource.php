@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Api;
 
+use App\Enums\UserStatus;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -26,10 +27,11 @@ class UserResource extends JsonResource
                 $this->status = '冻结';
                 break;
         }
+
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'status' => $this->status,
+            'status' => UserStatus::getStatusName($this->status),
             'created_at' => (string)$this->created_at,
             'updated_at' => (string)$this->updated_at
         ];
