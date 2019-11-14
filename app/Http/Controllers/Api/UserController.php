@@ -22,6 +22,7 @@ class UserController extends Controller
     // 返回单一用户信息
     public function show(User $user)
     {
+        3/0;
         return $this->success(new UserResource($user));
     }
 
