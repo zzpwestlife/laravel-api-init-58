@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Requests\Api\UserRequest;
+use App\Http\Resources\Api\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -13,15 +14,15 @@ class UserController extends Controller
     // 返回用户列表
     public function index()
     {
-        //3 个用户为一页
+        //3个用户为一页
         $users = User::paginate(3);
-        return $this->success($users);
+        return UserResource::collection($users);
     }
 
     // 返回单一用户信息
     public function show(User $user)
     {
-        return $this->success($user);
+        return $this->success(new UserResource($user));
     }
 
     // 用户注册
