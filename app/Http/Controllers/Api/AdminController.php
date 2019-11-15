@@ -35,7 +35,7 @@ class AdminController extends Controller
     // 用户登录
     public function login(Request $request)
     {
-        $token = Auth::guard('admin')->attempt(['name' => $request->name, 'password' => $request->password]);
+        $token = Auth::attempt(['name' => $request->name, 'password' => $request->password]);
         if ($token) {
             return $this->setStatusCode(201)->success(['token' => 'bearer' . $token]);
         }
@@ -45,7 +45,7 @@ class AdminController extends Controller
     // 用户退出
     public function logout()
     {
-        Auth::guard('admin')->logout();
+        Auth::logout();
         return $this->success('退出成功...');
     }
 
@@ -53,7 +53,7 @@ class AdminController extends Controller
     public function info()
     {
         // 这里也是 user 方法
-        $admin = Auth::guard('admin')->user();
+        $admin = Auth::user();
         return $this->success(new AdminResource($admin));
     }
 }
