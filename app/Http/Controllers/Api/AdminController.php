@@ -35,9 +35,11 @@ class AdminController extends Controller
     // 用户登录
     public function login(Request $request)
     {
-        $token = Auth::attempt(['name' => $request->name, 'password' => $request->password]);
+        // 获取当前守护的名称
+        $present_guard = Auth::getDefaultDriver();
+        $token = Auth::claims(['guard' => $present_guard])->attempt(['name' => $request->name, 'password' => $request->password]);
         if ($token) {
-            return $this->setStatusCode(201)->success(['token' => 'bearer' . $token]);
+            return $this->setStatusCode(201)->success(['token' => 'bearer ' . $token]);
         }
         return $this->failed('账号或密码错误', 400);
     }

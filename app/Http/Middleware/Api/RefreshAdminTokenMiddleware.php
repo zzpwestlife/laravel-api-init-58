@@ -6,6 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Tymon\JWTAuth\Exceptions\JWTException;
+use Tymon\JWTAuth\Exceptions\TokenInvalidException;
 use Tymon\JWTAuth\Http\Middleware\BaseMiddleware;
 use Tymon\JWTAuth\Exceptions\TokenExpiredException;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
@@ -28,7 +29,22 @@ class RefreshAdminTokenMiddleware extends BaseMiddleware
     {
         // 检查此次请求中是否带有 token，如果没有则抛出异常。
         $this->checkForToken($request);
-//         使用 try 包裹，以捕捉 token 过期所抛出的 TokenExpiredException  异常
+        // 获取当前守护的名称
+        $present_guard = Auth::getDefaultDriver();
+
+        // 获取当前token
+        $token = Auth::getToken();
+
+        // 即使过期了，也能获取到token里的 载荷 信息。
+        $payload = Auth::manager()->getJWTProvider()->decode($token->get());
+
+        // 如果不包含 guard 字段或者 guard 所对应的值与当前的 guard 守护值不相同
+        // 证明是不属于当前 guard 守护的 token
+        if (empty($payload['guard']) || $payload['guard'] != $present_guard) {
+            throw new TokenInvalidException();
+        }
+
+        // 使用 try 包裹，以捕捉 token 过期所抛出的 TokenExpiredException  异常
         try {
             // 检测用户的登录状态，如果正常则通过
             if ($this->auth->parseToken()->authenticate()) {
