@@ -28,4 +28,19 @@ Route::namespace('Api')->prefix('v1')->middleware('cors')->group(function () {
         Route::get('/users/info', 'UserController@info')->name('users.info');
         Route::get('/users/{user}', 'UserController@show')->where('user', '[0-9]+')->name('users.show');
     });
+
+    // 管理员注册
+    Route::post('/admins', 'AdminController@store')->name('admins.store');
+    // 管理员登录
+    Route::post('/admin/login', 'AdminController@login')->name('admins.login');
+    Route::middleware('admin.refresh')->group(function () {
+        // 当前管理员信息
+        Route::get('/admins/info', 'AdminController@info')->name('admins.info');
+        // 管理员列表
+        Route::get('/admins', 'AdminController@index')->name('admins.index');
+        // 管理员信息
+        Route::get('/admins/{admin}', 'AdminController@show')->where('admin', '[0-9]+')->name('admins.show');
+        // 管理员退出
+        Route::get('/admins/logout', 'AdminController@logout')->name('admins.logout');
+    });
 });
