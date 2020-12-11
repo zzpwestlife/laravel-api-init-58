@@ -19,12 +19,11 @@ class RefreshTokenMiddleware extends BaseMiddleware
      * Handle an incoming request.
      *
      * @param Request $request
-     * @param Closure $next
      *
      * @return mixed
+     *
      * @throws UnauthorizedHttpException
      * @throws JWTException
-     *
      */
     public function handle($request, Closure $next)
     {

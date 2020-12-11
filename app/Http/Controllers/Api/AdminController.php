@@ -12,12 +12,12 @@ use Tymon\JWTAuth\Exceptions\TokenExpiredException;
 
 class AdminController extends Controller
 {
-
     // 返回用户列表
     public function index()
     {
         //3个用户为一页
         $admins = Admin::paginate(3);
+
         return AdminResource::collection($admins);
     }
 
@@ -31,6 +31,7 @@ class AdminController extends Controller
     public function store(AdminRequest $request)
     {
         Admin::create($request->all());
+
         return $this->setStatusCode(201)->success('用户注册成功');
     }
 
@@ -51,8 +52,10 @@ class AdminController extends Controller
                 }
             }
             SaveLastTokenJob::dispatch($user, $token);
-            return $this->setStatusCode(201)->success(['token' => 'bearer' . $token]);
+
+            return $this->setStatusCode(201)->success(['token' => 'bearer'.$token]);
         }
+
         return $this->failed('账号或密码错误', 400);
     }
 
@@ -60,6 +63,7 @@ class AdminController extends Controller
     public function logout()
     {
         Auth::logout();
+
         return $this->success('退出成功...');
     }
 
@@ -68,6 +72,7 @@ class AdminController extends Controller
     {
         // 这里也是 user 方法
         $admin = Auth::user();
+
         return $this->success(new AdminResource($admin));
     }
 }

@@ -2,7 +2,6 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Laravel\Horizon\Horizon;
 
@@ -26,11 +25,12 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
         Horizon::auth(function ($request) {
-            if (config('app.env') == 'local') {
+            if ('local' == config('app.env')) {
                 return true;
             } else {
                 $get_ip = $request->getClientIp();
                 $can_ip = config('horizon.ip');
+
                 return $get_ip == $can_ip;
             }
         });
