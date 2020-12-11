@@ -33,10 +33,8 @@ class ExceptionReport
 
     /**
      * ExceptionReport constructor.
-     * @param Request $request
-     * @param Exception $exception
      */
-    function __construct(Request $request, Exception $exception)
+    public function __construct(Request $request, Exception $exception)
     {
         $this->request = $request;
         $this->exception = $exception;
@@ -61,7 +59,6 @@ class ExceptionReport
 
     public function register($className, callable $callback)
     {
-
         $this->doReport[$className] = $callback;
     }
 
@@ -78,21 +75,19 @@ class ExceptionReport
         foreach (array_keys($this->doReport) as $report) {
             if ($this->exception instanceof $report) {
                 $this->report = $report;
+
                 return true;
             }
         }
 
         return false;
-
     }
 
     /**
-     * @param Exception $e
      * @return static
      */
     public static function make(Exception $e)
     {
-
         return new static(\request(), $e);
     }
 
@@ -103,9 +98,11 @@ class ExceptionReport
     {
         if ($this->exception instanceof ValidationException) {
             $error = array_first($this->exception->errors());
+
             return $this->failed(array_first($error), $this->exception->status);
         }
         $message = $this->doReport[$this->report];
+
         return $this->failed($message[0], $message[1]);
     }
 

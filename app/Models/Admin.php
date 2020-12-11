@@ -23,12 +23,12 @@ class Admin extends Authenticatable implements JWTSubject
 
     // 去掉我创建的数据表没有的字段
     protected $fillable = [
-        'name', 'password'
+        'name', 'password',
     ];
 
     // 去掉我创建的数据表没有的字段
     protected $hidden = [
-        'password'
+        'password',
     ];
 
     // 将密码进行加密

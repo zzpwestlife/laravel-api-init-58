@@ -6,30 +6,24 @@ class UserRequest extends FormRequest
 {
     public function rules()
     {
-
         switch ($this->method()) {
             case 'GET':
-            {
                 return [
-                    'id' => ['required,exists:shop_user,id']
+                    'id' => ['required,exists:shop_user,id'],
                 ];
-            }
+
             case 'POST':
-            {
                 return [
                     'name' => ['required', 'max:12', 'unique:users,name'],
-                    'password' => ['required', 'max:16', 'min:6']
+                    'password' => ['required', 'max:16', 'min:6'],
                 ];
-            }
+
             case 'PUT':
             case 'PATCH':
             case 'DELETE':
             default:
-            {
                 return [
-
                 ];
-            }
         }
     }
 
@@ -43,7 +37,7 @@ class UserRequest extends FormRequest
             'name.max' => '用户名最大长度为 12 个字符',
             'password.required' => '密码不能为空',
             'password.max' => '密码长度不能超过 16 个字符',
-            'password.min' => '密码长度不能小于 6 个字符'
+            'password.min' => '密码长度不能小于 6 个字符',
         ];
     }
 }

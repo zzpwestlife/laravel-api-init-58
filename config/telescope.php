@@ -4,7 +4,6 @@ use Laravel\Telescope\Watchers;
 use Laravel\Telescope\Http\Middleware\Authorize;
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | Telescope Domain
@@ -92,11 +91,9 @@ return [
     */
 
     'ignore_paths' => [
-        //
     ],
 
     'ignore_commands' => [
-        //
     ],
 
     /*

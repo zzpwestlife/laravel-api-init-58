@@ -12,12 +12,12 @@ use Tymon\JWTAuth\Exceptions\TokenExpiredException;
 
 class UserController extends Controller
 {
-
     // 返回用户列表
     public function index()
     {
         //3个用户为一页
         $users = User::paginate(3);
+
         return UserResource::collection($users);
     }
 
@@ -31,6 +31,7 @@ class UserController extends Controller
     public function store(UserRequest $request)
     {
         User::create($request->all());
+
         return $this->setStatusCode(201)->success('用户注册成功');
     }
 
@@ -51,8 +52,10 @@ class UserController extends Controller
                 }
             }
             SaveLastTokenJob::dispatch($user, $token);
-            return $this->setStatusCode(201)->success(['token' => 'bearer' . $token]);
+
+            return $this->setStatusCode(201)->success(['token' => 'bearer'.$token]);
         }
+
         return $this->failed('账号或密码错误', 400);
     }
 
@@ -60,6 +63,7 @@ class UserController extends Controller
     public function logout()
     {
         Auth::logout();
+
         return $this->success('退出成功...');
     }
 
@@ -67,6 +71,7 @@ class UserController extends Controller
     public function info()
     {
         $user = Auth::user();
+
         return $this->success(new UserResource($user));
     }
 }

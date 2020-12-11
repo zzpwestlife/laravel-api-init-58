@@ -10,7 +10,10 @@ use Illuminate\Foundation\Bus\Dispatchable;
 
 class SaveLastTokenJob implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchable;
+    use InteractsWithQueue;
+    use Queueable;
+    use SerializesModels;
     protected $model;
     protected $token;
 
@@ -19,10 +22,8 @@ class SaveLastTokenJob implements ShouldQueue
      *
      * @return void
      */
-
     public function __construct($model, $token)
     {
-        //
         $this->model = $model;
         $this->token = $token;
     }
@@ -34,7 +35,6 @@ class SaveLastTokenJob implements ShouldQueue
      */
     public function handle()
     {
-        //
         $this->model->last_token = $this->token;
         $this->model->save();
     }
